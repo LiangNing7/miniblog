@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/LiangNing7/miniblog/cmd/mb-apiserver/app/options"
+	"github.com/LiangNing7/miniblog/pkg/version"
 )
 
 var configFile string // 配置文件路径.
@@ -62,11 +63,16 @@ The project features include:
 	// 将 ServerOptions 中的选项绑定到命令标志.
 	opts.AddFlags(cmd.PersistentFlags())
 
+	// 添加 --version 标志.
+	version.AddFlags(cmd.PersistentFlags())
 	return cmd
 }
 
 // run 是运行逻辑，负者初始化日志，解析配置、校验选项并启动服务器.
 func run(opts *options.ServerOptions) error {
+	// 如果传入 --version，则打印版本信息并退出.
+	version.PrintAndExitIfRequested()
+
 	// 将 viper 中的配置解析到 opts.
 	if err := viper.Unmarshal(opts); err != nil {
 		return err
