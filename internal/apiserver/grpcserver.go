@@ -15,6 +15,7 @@ import (
 type grpcServer struct {
 	srv server.Server
 	// stop 为优雅关停函数.
+	// 因为这里可能会调用 HTTP 的关停函数和 gRPC 的关停函数.
 	stop func(context.Context)
 }
 
@@ -40,6 +41,7 @@ func (c *ServerConfig) NewGRPCServerOr() (server.Server, error) {
 		return nil, err
 	}
 
+	// 如果只启动 gRPC 服务.
 	if c.cfg.ServerMode == GRPCServerMode {
 		return &grpcServer{
 			srv: grpcsrv,
@@ -79,5 +81,6 @@ func (s *grpcServer) RunOrDie() {
 
 // GracefulStop 优雅停止 HTTP 和 gRPC 服务.
 func (s *grpcServer) GracefulStop(ctx context.Context) {
+	// 根据返回的实例，进行对应的优雅关停.
 	s.stop(ctx)
 }
