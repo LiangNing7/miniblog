@@ -411,7 +411,8 @@ type GetPostRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// postID 表示要获取的文章 ID
-	PostID string `protobuf:"bytes,1,opt,name=postID,proto3" json:"postID,omitempty"`
+	// @gotags: uri:"postID"
+	PostID string `protobuf:"bytes,1,opt,name=postID,proto3" json:"postID,omitempty" uri:"postID"`
 }
 
 func (x *GetPostRequest) Reset() {
@@ -505,9 +506,11 @@ type ListPostRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// offset 表示偏移量
-	Offset int64 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	// @gotags: form:"offset"
+	Offset int64 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty" form:"offset"`
 	// limit 表示每页数量
-	Limit int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	// @gotags: form:"limit"
+	Limit int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty" form:"limit"`
 	// title 表示可选的标题过滤
 	Title *string `protobuf:"bytes,3,opt,name=title,proto3,oneof" json:"title,omitempty"`
 }

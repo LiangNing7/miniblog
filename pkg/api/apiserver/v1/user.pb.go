@@ -697,7 +697,8 @@ type DeleteUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// userID 表示用户 ID
-	UserID string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	// @gotags: uri:"userID"
+	UserID string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty" uri:"userID"`
 }
 
 func (x *DeleteUserRequest) Reset() {
@@ -781,7 +782,8 @@ type GetUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// userID 表示用户 ID
-	UserID string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	// @gotags: uri:"userID"
+	UserID string `protobuf:"bytes,1,opt,name=userID,proto3" json:"userID,omitempty" uri:"userID"`
 }
 
 func (x *GetUserRequest) Reset() {
@@ -875,9 +877,11 @@ type ListUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// offset 表示偏移量
-	Offset int64 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	// @gotags: form:"offset"
+	Offset int64 `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty" form:"offset"`
 	// limit 表示每页数量
-	Limit int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	// @gotags: form:"limit"
+	Limit int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty" form:"limit"`
 }
 
 func (x *ListUserRequest) Reset() {
