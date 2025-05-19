@@ -1,3 +1,8 @@
+// Copyright 2025 LiangNing7 <LiangNing7@gmail.com>. All rights reserved.
+// Use of this source code is governed by a MIT style
+// license that can be found in the LICENSE file. The original repo for
+// this file is https://github.com/LiangNing7/miniblog.
+
 package post
 
 //go:generate mockgen -destination mock_post.go -package post github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/post PostBiz
