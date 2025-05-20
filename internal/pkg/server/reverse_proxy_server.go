@@ -7,6 +7,7 @@ package server
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"net/http"
 	"time"
@@ -15,6 +16,7 @@ import (
 	genericoptions "github.com/onexstack/onexstack/pkg/options"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/encoding/protojson"
 
@@ -30,15 +32,26 @@ type GRPCGatewayServer struct {
 func NewGRPCGatewayServer(
 	httpOptions *genericoptions.HTTPOptions,
 	grpcOptions *genericoptions.GRPCOptions,
+	tlsOptions *genericoptions.TLSOptions,
 	registerHandler func(mux *runtime.ServeMux, conn *grpc.ClientConn) error,
 ) (*GRPCGatewayServer, error) {
+	var tlsConfig *tls.Config
+	if tlsOptions != nil && tlsOptions.UseTLS {
+		tlsConfig = tlsOptions.MustTLSConfig()
+		tlsConfig.InsecureSkipVerify = true
+	}
+
 	dialOptions := []grpc.DialOption{
 		grpc.WithConnectParams(grpc.ConnectParams{
 			Backoff:           backoff.DefaultConfig,
 			MinConnectTimeout: 10 * time.Second, // 最小连接超时时间.
 		}),
 	}
-	dialOptions = append(dialOptions, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if tlsConfig != nil {
+		dialOptions = append(dialOptions, grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)))
+	} else {
+		dialOptions = append(dialOptions, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	}
 
 	conn, err := grpc.NewClient(grpcOptions.Addr, dialOptions...)
 	if err != nil {
@@ -60,8 +73,9 @@ func NewGRPCGatewayServer(
 
 	return &GRPCGatewayServer{
 		srv: &http.Server{
-			Addr:    httpOptions.Addr,
-			Handler: gwmux,
+			Addr:      httpOptions.Addr,
+			Handler:   gwmux,
+			TLSConfig: tlsConfig,
 		},
 	}, nil
 }
@@ -77,7 +91,13 @@ func (s *GRPCGatewayServer) RunOrDie() {
 // GracefulStop 优雅关闭 GRPC 网关服务器.
 func (s *GRPCGatewayServer) GracefulStop(ctx context.Context) {
 	log.Infow("Gracefully stop HTTP(s) server")
-	if err := s.srv.Shutdown(ctx); err != nil {
+	// 默认启动 HTTP 服务器
+	serveFn := func() error { return s.srv.ListenAndServe() }
+	if s.srv.TLSConfig != nil {
+		serveFn = func() error { return s.srv.ListenAndServeTLS("", "") }
+	}
+
+	if err := serveFn(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Errorw("HTTP(S) server forced to shutdown", "err", err)
 	}
 }
