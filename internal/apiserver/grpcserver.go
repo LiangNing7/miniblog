@@ -47,6 +47,8 @@ func (c *ServerConfig) NewGRPCServerOr() (server.Server, error) {
 			mw.RequestIDInterceptor(),
 			// 认证拦截器.
 			selector.UnaryServerInterceptor(mw.AuthnInterceptor(c.retriever), NewAuthnWhiteListMatcher()),
+			// 授权拦截器.
+			selector.UnaryServerInterceptor(mw.AuthzInterceptor(c.authz), NewAuthzWhiteListMatcher()),
 			// 请求默认值设置拦截器
 			mw.DefaulterInterceptor(),
 			// 数据校验拦截器
@@ -111,6 +113,19 @@ func (s *grpcServer) GracefulStop(ctx context.Context) {
 
 // NewAuthnWhiteListMatcher 创建认证白名单匹配器.
 func NewAuthnWhiteListMatcher() selector.Matcher {
+	whitelist := map[string]struct{}{
+		apiv1.MiniBlog_Healthz_FullMethodName:    {},
+		apiv1.MiniBlog_CreateUser_FullMethodName: {},
+		apiv1.MiniBlog_Login_FullMethodName:      {},
+	}
+	return selector.MatchFunc(func(ctx context.Context, call interceptors.CallMeta) bool {
+		_, ok := whitelist[call.FullMethod()]
+		return !ok
+	})
+}
+
+// NewAuthzWhiteListMatcher 创建授权白名单匹配器.
+func NewAuthzWhiteListMatcher() selector.Matcher {
 	whitelist := map[string]struct{}{
 		apiv1.MiniBlog_Healthz_FullMethodName:    {},
 		apiv1.MiniBlog_CreateUser_FullMethodName: {},

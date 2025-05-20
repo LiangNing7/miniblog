@@ -8,6 +8,8 @@ package biz
 //go:generate mockgen -destination mock_biz.go -package biz github.com/LiangNing7/miniblog/internal/apiserver/biz IBiz
 
 import (
+	"github.com/LiangNing7/goutils/pkg/authz"
+
 	postv1 "github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/post"
 	userv1 "github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/user"
 
@@ -29,19 +31,20 @@ type IBiz interface {
 // biz 是 IBiz 的一个具体实现.
 type biz struct {
 	store store.IStore
+	authz *authz.Authz
 }
 
 // 确保 biz 实现了 IBiz 接口.
 var _ IBiz = (*biz)(nil)
 
 // NewBiz 创建一个 IBiz 类型的实例.
-func NewBiz(store store.IStore) *biz {
-	return &biz{store: store}
+func NewBiz(store store.IStore, authz *authz.Authz) *biz {
+	return &biz{store: store, authz: authz}
 }
 
 // UserV1 返回一个实现了 UserBiz 接口的实例.
 func (b *biz) UserV1() userv1.UserBiz {
-	return userv1.New(b.store)
+	return userv1.New(b.store, b.authz)
 }
 
 // PostV1 返回一个实现了 PostBiz 接口的实例.

@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/LiangNing7/goutils/pkg/authz"
 	"github.com/LiangNing7/goutils/pkg/store/where"
 	"github.com/LiangNing7/goutils/pkg/token"
 	genericoptions "github.com/onexstack/onexstack/pkg/options"
@@ -71,6 +72,7 @@ type ServerConfig struct {
 	biz       biz.IBiz
 	val       *validation.Validator
 	retriever mw.UserRetriever
+	authz     *authz.Authz
 }
 
 // NewUnionServer 根据配置创建联合服务器.
@@ -146,11 +148,18 @@ func (cfg *Config) NewServerConfig() (*ServerConfig, error) {
 	}
 	store := store.NewStore(db)
 
+	// 初始化权限认证模块.
+	authz, err := authz.NewAuthz(store.DB(context.TODO()))
+	if err != nil {
+		return nil, err
+	}
+
 	return &ServerConfig{
 		cfg:       cfg,
-		biz:       biz.NewBiz(store),
+		biz:       biz.NewBiz(store, authz),
 		val:       validation.New(store),
 		retriever: &UserRetriever{store: store},
+		authz:     authz,
 	}, nil
 }
 
