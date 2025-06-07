@@ -12,8 +12,15 @@ import (
 	"sync"
 
 	"github.com/LiangNing7/goutils/pkg/store/where"
+	"github.com/google/wire"
 	"gorm.io/gorm"
 )
+
+// ProviderSet 是一个 Wire 的 Provider 集合，用于声明依赖注入的规则.Add commentMore actions
+// 包含 NewStore 构造函数，用于生成 datastore 实例.
+// wire.Bind 用于将接口 IStore 与具体实现 *datastore 绑定，
+// 从而在依赖 IStore 的地方，能够自动注入 *datastore 实例.
+var ProviderSet = wire.NewSet(NewStore, wire.Bind(new(IStore), new(*datastore)))
 
 var (
 	once sync.Once
