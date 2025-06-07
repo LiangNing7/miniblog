@@ -9,13 +9,13 @@ import (
 	"context"
 
 	"github.com/LiangNing7/goutils/pkg/token"
+	"google.golang.org/grpc"
 
 	"github.com/LiangNing7/miniblog/internal/apiserver/model"
 	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
 	"github.com/LiangNing7/miniblog/internal/pkg/errno"
 	"github.com/LiangNing7/miniblog/internal/pkg/known"
 	"github.com/LiangNing7/miniblog/internal/pkg/log"
-	"google.golang.org/grpc"
 )
 
 // UserRetriever 用于根据用户名获取用户信息的接口.

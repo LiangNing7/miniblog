@@ -11,6 +11,7 @@ import (
 	"context"
 	"sync"
 
+	"github.com/LiangNing7/goutils/pkg/authn"
 	"github.com/LiangNing7/goutils/pkg/authz"
 	"github.com/LiangNing7/goutils/pkg/store/where"
 	"github.com/LiangNing7/goutils/pkg/token"
@@ -26,7 +27,6 @@ import (
 	"github.com/LiangNing7/miniblog/internal/pkg/known"
 	"github.com/LiangNing7/miniblog/internal/pkg/log"
 	apiv1 "github.com/LiangNing7/miniblog/pkg/api/apiserver/v1"
-	"github.com/LiangNing7/miniblog/pkg/auth"
 )
 
 // UserBiz 定义处理用户请求所需的方法.
@@ -71,7 +71,7 @@ func (b *userBiz) Login(ctx context.Context, rq *apiv1.LoginRequest) (*apiv1.Log
 	}
 
 	// 对比传入的明文密码和数据库中已加密过的密码是否匹配
-	if err := auth.Compare(userM.Password, rq.GetPassword()); err != nil {
+	if err := authn.Compare(userM.Password, rq.GetPassword()); err != nil {
 		log.W(ctx).Errorw("Failed to compare password", "err", err)
 		return nil, errno.ErrPasswordInvalid
 	}
@@ -105,12 +105,12 @@ func (b *userBiz) ChangePassword(ctx context.Context, rq *apiv1.ChangePasswordRe
 		return nil, err
 	}
 
-	if err := auth.Compare(userM.Password, rq.GetOldPassword()); err != nil {
+	if err := authn.Compare(userM.Password, rq.GetOldPassword()); err != nil {
 		log.W(ctx).Errorw("Failed to compare password", "err", err)
 		return nil, errno.ErrPasswordInvalid
 	}
 
-	userM.Password, _ = auth.Encrypt(rq.GetNewPassword())
+	userM.Password, _ = authn.Encrypt(rq.GetNewPassword())
 	if err := b.store.User().Update(ctx, userM); err != nil {
 		return nil, err
 	}
