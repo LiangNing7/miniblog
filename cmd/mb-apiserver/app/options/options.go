@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"time"
 
-	genericoptions "github.com/onexstack/onexstack/pkg/options"
-	stringsutil "github.com/onexstack/onexstack/pkg/util/strings"
+	genericoptions "github.com/LiangNing7/goutils/pkg/options"
+	stringsutil "github.com/LiangNing7/goutils/pkg/util/strings"
 	"github.com/spf13/pflag"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -103,7 +103,7 @@ func (o *ServerOptions) Validate() error {
 	return utilerrors.NewAggregate(errs)
 }
 
-// Config 基于 ServerOptions 构建 apiserver.COnfig.
+// Config 基于 ServerOptions 构建 apiserver.Config.
 func (o *ServerOptions) Config() (*apiserver.Config, error) {
 	return &apiserver.Config{
 		ServerMode:   o.ServerMode,

@@ -5,7 +5,7 @@
 
 package user
 
-//go:generate mockgen -destination mock_user.go -package user github.com/onexstack/miniblog/internal/apiserver/biz/v1/user UserBiz
+//go:generate mockgen -destination mock_user.go -package user github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/user UserBiz
 
 import (
 	"context"

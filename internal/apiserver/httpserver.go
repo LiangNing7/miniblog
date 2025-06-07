@@ -7,12 +7,13 @@ package apiserver
 
 import (
 	"context"
-	"net/http"
 
+	"github.com/LiangNing7/goutils/pkg/core"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 
 	handler "github.com/LiangNing7/miniblog/internal/apiserver/handler/http"
+	"github.com/LiangNing7/miniblog/internal/pkg/errno"
 	mw "github.com/LiangNing7/miniblog/internal/pkg/middleware/gin"
 	"github.com/LiangNing7/miniblog/internal/pkg/server"
 )
@@ -100,7 +101,7 @@ func InstallGenericAPI(engine *gin.Engine) {
 
 	// 注册 404 路由处理.
 	engine.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, "Page not found.")
+		core.WriteResponse(c, errno.ErrPageNotFound, nil)
 	})
 }
 
