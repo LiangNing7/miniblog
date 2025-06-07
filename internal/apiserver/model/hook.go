@@ -6,8 +6,8 @@
 package model
 
 import (
+	"github.com/LiangNing7/goutils/pkg/authn"
 	"github.com/LiangNing7/goutils/pkg/rid"
-	"github.com/LiangNing7/miniblog/pkg/auth"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +31,7 @@ func (m *UserM) AfterCreate(tx *gorm.DB) error {
 func (m *UserM) BeforeCreate(tx *gorm.DB) error {
 	// Encrypt the user password.
 	var err error
-	m.Password, err = auth.Encrypt(m.Password)
+	m.Password, err = authn.Encrypt(m.Password)
 	if err != nil {
 		return err
 	}

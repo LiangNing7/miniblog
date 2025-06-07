@@ -6,9 +6,12 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/LiangNing7/goutils/pkg/core"
 	"github.com/LiangNing7/miniblog/cmd/mb-apiserver/app/options"
 	"github.com/LiangNing7/miniblog/internal/pkg/log"
 	"github.com/LiangNing7/miniblog/pkg/version"
@@ -60,7 +63,7 @@ The project features include:
 		Args: cobra.NoArgs,
 	}
 	// 初始化配置函数，在每个命令运行时调用.
-	cobra.OnInitialize(onInitialize)
+	cobra.OnInitialize(core.OnInitialize(&configFile, "MINIBLOG", searchDirs(), defaultConfigName))
 
 	// cobra 支持持久性标志(PersistentFlag)，该标志可用于它所分配的命令以及该命令下的每个子命令.
 	// 推荐使用配置文件来配置应用，便于管理配置项.
@@ -85,26 +88,26 @@ func run(opts *options.ServerOptions) error {
 
 	// 将 viper 中的配置解析到 opts.
 	if err := viper.Unmarshal(opts); err != nil {
-		return err
+		return fmt.Errorf("failed to unmarshal configuration: %w", err)
 	}
 
 	// 校验命令行选项.
 	if err := opts.Validate(); err != nil {
-		return err
+		return fmt.Errorf("invalid options: %w", err)
 	}
 
 	// 获取应用配置.
 	// 将命令行选项和应用配置分开，可以更加灵活的处理 2 种不同类型的配置.
 	cfg, err := opts.Config()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to load configuration: %w", err)
 	}
 
 	// 创建服务器实例.
 	// 注意这里是联合服务器，因为可能同时启动多个不同类型的服务器.
 	server, err := cfg.NewUnionServer()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create server: %w", err)
 	}
 
 	// 启动服务器
