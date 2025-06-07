@@ -73,6 +73,8 @@ func (o *ServerOptions) AddFlags(fs *pflag.FlagSet) {
 	// 参数名称为 `--expiration`，默认值为 o.Expiration
 	fs.DurationVar(&o.Expiration, "expiration", o.Expiration, "The expiration duration of JWT tokens.")
 	fs.BoolVar(&o.EnableMemoryStore, "enable-memory-store", o.EnableMemoryStore, "Enable in-memory database (useful for testing or development).")
+
+	// 添加子选项的命令行标志.
 	o.TLSOptions.AddFlags(fs)
 	o.HTTPOptions.AddFlags(fs)
 	o.GRPCOptions.AddFlags(fs)
