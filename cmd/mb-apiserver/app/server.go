@@ -12,9 +12,10 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/LiangNing7/goutils/pkg/core"
+	"github.com/LiangNing7/goutils/pkg/version"
+
 	"github.com/LiangNing7/miniblog/cmd/mb-apiserver/app/options"
 	"github.com/LiangNing7/miniblog/internal/pkg/log"
-	"github.com/LiangNing7/miniblog/pkg/version"
 )
 
 var configFile string // 配置文件路径.
