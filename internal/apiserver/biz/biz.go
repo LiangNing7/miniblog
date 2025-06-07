@@ -9,6 +9,7 @@ package biz
 
 import (
 	"github.com/LiangNing7/goutils/pkg/authz"
+	"github.com/google/wire"
 
 	postv1 "github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/post"
 	userv1 "github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/user"
@@ -17,6 +18,12 @@ import (
 	// postv2 "github.com/LiangNing7/miniblog/internal/apiserver/biz/v2/post".
 	"github.com/LiangNing7/miniblog/internal/apiserver/store"
 )
+
+// ProviderSet 是一个 Wire 的 Provider 集合，用于声明依赖注入的规则.Add commentMore actions
+// 包含 NewBiz 构造函数，用于生成 biz 实例.
+// wire.Bind 用于将接口 IBiz 与具体实现 *biz 绑定，
+// 这样依赖 IBiz 的地方会自动注入 *biz 实例.
+var ProviderSet = wire.NewSet(NewBiz, wire.Bind(new(IBiz), new(*biz)))
 
 // IBiz 定义了业务层层需要实现的方法.
 type IBiz interface {
