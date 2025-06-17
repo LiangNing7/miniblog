@@ -82,12 +82,15 @@ func (store *datastore) DB(ctx context.Context, wheres ...where.Where) *gorm.DB 
 // TX 返回一个新的事务实例.
 // nolint: fatcontext
 func (store *datastore) TX(ctx context.Context, fn func(ctx context.Context) error) error {
-	return store.core.WithContext(ctx).Transaction(
-		func(tx *gorm.DB) error {
+	// WithContext 用于在 context 中注入事务实例.
+	return store.core.WithContext(ctx).
+		// Transaction 用于开启事务，传入回调 fn.
+		Transaction(func(tx *gorm.DB) error {
+			// 上层传入的 ctx 被打包上了这个事务 tx,
+			// 如果后续调用 store.DB 则会优先使用这个事务连接.
 			ctx = context.WithValue(ctx, transactionKey{}, tx)
 			return fn(ctx)
-		},
-	)
+		})
 }
 
 // Users 返回一个实现了 UserStore 接口的实例.

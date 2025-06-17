@@ -23,7 +23,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 option go_package = "github.com/LiangNing7/miniblog/pkg/api/apiserver/v1;v1";
 
 // OpenAPI 全局配置，提供详细配置信息，用于生成 OpenAPI 文档
- option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
      info: {
          // API名称
          title: "miniblog API";
@@ -50,10 +50,10 @@ option go_package = "github.com/LiangNing7/miniblog/pkg/api/apiserver/v1;v1";
      produces: "application/json";
  };
 
-// Miniblog 定义了一个 MiniBlog RPC 服务.
+// MiniBlog 定义了一个 MiniBlog RPC 服务.
 service MiniBlog {
-  // Healthz 健康检查.
-  rpc Healthz(google.protobuf.Empty) returns (HealthzResponse) {
+    // Healthz 健康检查.
+    rpc Healthz(google.protobuf.Empty) returns (HealthzResponse) {
         // 通过 google.api.http 注释，指定 HTTP 方法为 GET、URL路径为 /healthz
         option (google.api.http) = {
             get: "/healthz",
@@ -67,7 +67,7 @@ service MiniBlog {
             // 将该接口归类为“服务治理”
             tags: "服务治理";
         };
-  };
+    };
 
     // Login 用户登录
     rpc Login(LoginRequest) returns (LoginResponse) {

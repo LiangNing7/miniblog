@@ -3,5 +3,5 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/LiangNing7/miniblog.
 
-// Package store implement store.
-package store // import "github.com/LiangNing7/miniblog/internal/apiserver/store"
+// Package validation validate request parames.
+package validation // import "github.com/LiangNing7/miniblog/internal/apiserver/pkg/validation"

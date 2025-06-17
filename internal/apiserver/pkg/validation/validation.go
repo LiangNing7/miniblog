@@ -8,9 +8,10 @@ package validation
 import (
 	"regexp"
 
+	"github.com/google/wire"
+
 	"github.com/LiangNing7/miniblog/internal/apiserver/store"
 	"github.com/LiangNing7/miniblog/internal/pkg/errno"
-	"github.com/google/wire"
 )
 
 // Validator 是验证逻辑的实现结构体.

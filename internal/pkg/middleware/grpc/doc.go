@@ -3,4 +3,5 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/LiangNing7/miniblog.
 
+// Package grpc middleware.
 package grpc // import "github.com/LiangNing7/miniblog/internal/pkg/middleware/grpc"

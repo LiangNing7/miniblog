@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/LiangNing7/miniblog.
 
+// Package post implement biz of post.
 package post
 
 //go:generate mockgen -destination mock_post.go -package post github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/post PostBiz

@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/LiangNing7/miniblog.
 
+// Package user implement biz of user.
 package user
 
 //go:generate mockgen -destination mock_user.go -package user github.com/LiangNing7/miniblog/internal/apiserver/biz/v1/user UserBiz

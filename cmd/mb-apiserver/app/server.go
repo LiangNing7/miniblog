@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/LiangNing7/miniblog.
 
+// Package app is the entrypoint of the application.
 package app
 
 import (
