@@ -6,10 +6,11 @@
 package gin
 
 import (
-	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
-	"github.com/LiangNing7/miniblog/internal/pkg/known"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+
+	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
+	"github.com/LiangNing7/miniblog/internal/pkg/known"
 )
 
 // RequestIDMiddleware 是一个 Gin 中间件，用于在每个 HTTP 请求的上下文和

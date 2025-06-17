@@ -10,10 +10,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
-	"github.com/LiangNing7/miniblog/internal/pkg/known"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
+	"github.com/LiangNing7/miniblog/internal/pkg/known"
 )
 
 // Logger 定义了 miniblog 项目的日志接口.

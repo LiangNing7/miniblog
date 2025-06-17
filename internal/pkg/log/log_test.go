@@ -9,9 +9,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
+
+	"github.com/LiangNing7/miniblog/internal/pkg/contextx"
 )
 
 // MockLogger 用于测试的自定义 Logger.

@@ -11,20 +11,20 @@ option go_package = "github.com/LiangNing7/miniblog/pkg/api/apiserver/v1";
 
 // ServiceStatus 表示服务的健康状态.
 enum ServiceStatus {
-  // Healthy 表示服务健康.
-  Healthy = 0;
-  // Unhealthy 表示服务不健康.
-  Unhealthy = 1;
+    // Healthy 表示服务健康.
+    Healthy = 0;
+    // Unhealthy 表示服务不健康.
+    Unhealthy = 1;
 }
 
 // HealthzResponse 表示健康检查的响应结构体.
 message HealthzResponse {
-  // status 表示服务的健康状态.
-  ServiceStatus status = 1;
+    // status 表示服务的健康状态.
+    ServiceStatus status = 1;
 
-  // timestamp 表示请求的时间戳.
-  string timestamp = 2;
+    // timestamp 表示请求的时间戳.
+    string timestamp = 2;
 
-  // message 表示可选的状态消息，描述服务健康的更多消息.
-  string message = 3;
+    // message 表示可选的状态消息，描述服务健康的更多消息.
+    string message = 3;
 }
